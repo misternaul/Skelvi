@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skelvi — Learn Real Skills from Real Experts</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06060a;
+  --bg2: #0d0d14;
+  --bg3: #12121c;
+  --card: #16161f;
+  --card2: #1c1c28;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.11);
+  --lime: #c8f04a;
+  --lime2: #a8d030;
+  --purple: #8b5cf6;
+  --text: #eeedf8;
+  --muted: #7a7990;
+  --muted2: #545368;
+  --success: #34d399;
+  --danger: #f87171;
+  --r: 14px;
+  --r-sm: 9px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+::selection{background:var(--lime);color:#000;}
+
+/* NOISE TEXTURE */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5%;position:sticky;top:0;z-index:100;background:rgba(6,6,10,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;color:var(--text);}
+.logo em{color:var(--lime);font-style:normal;}
+.nav-links{display:flex;gap:2rem;font-size:.85rem;color:var(--muted);}
+.nav-links a:hover{color:var(--text);}
+.nav-actions{display:flex;gap:.7rem;align-items:center;}
+.btn{padding:.55rem 1.3rem;border-radius:50px;font-size:.85rem;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:500;transition:all .2s;border:none;letter-spacing:.2px;}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2);}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,0.22);}
+.btn-lime{background:var(--lime);color:#000;font-weight:600;}
+.btn-lime:hover{background:var(--lime2);transform:translateY(-1px);}
+
+/* HERO */
+.hero{padding:7rem 5% 5rem;max-width:1280px;margin:0 auto;position:relative;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(200,240,74,0.08);border:1px solid rgba(200,240,74,0.2);color:var(--lime);padding:.35rem 1rem;border-radius:50px;font-size:.78rem;font-weight:500;margin-bottom:1.8rem;font-family:'DM Mono',monospace;letter-spacing:.5px;}
+.hero-eyebrow span{width:6px;height:6px;background:var(--lime);border-radius:50%;animation:blink 1.4s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:5rem;align-items:center;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:5.5rem;line-height:.95;letter-spacing:1px;margin-bottom:1.4rem;}
+.hero h1 .line2{color:var(--lime);display:block;font-size:6rem;}
+.hero h1 .line3{color:var(--muted2);display:block;font-size:4.5rem;}
+.hero-sub{color:var(--muted);font-size:1rem;line-height:1.75;max-width:460px;margin-bottom:2.2rem;}
+.hero-search{display:flex;gap:.5rem;background:var(--card2);border:1px solid var(--border2);border-radius:50px;padding:.45rem .45rem .45rem 1.3rem;max-width:520px;margin-bottom:1.8rem;}
+.hero-search input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:.9rem;font-family:'Space Grotesk',sans-serif;}
+.hero-search input::placeholder{color:var(--muted2);}
+.hero-pills{display:flex;gap:.5rem;flex-wrap:wrap;}
+.pill-suggestion{background:var(--card);border:1px solid var(--border);color:var(--muted);font-size:.75rem;padding:.3rem .8rem;border-radius:50px;cursor:pointer;transition:all .2s;}
+.pill-suggestion:hover{border-color:var(--lime);color:var(--lime);}
+.hero-numbers{display:flex;gap:2.5rem;margin-top:2.5rem;}
+.hn strong{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--lime);display:block;line-height:1;}
+.hn span{font-size:.72rem;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;}
+
+/* HERO VISUAL - skill cards floating */
+.hero-visual{position:relative;height:480px;}
+.sk-card{position:absolute;background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.1rem 1.3rem;box-shadow:0 24px 64px rgba(0,0,0,.5);}
+.sk-main{width:300px;top:30px;right:0;}
+.sk-mini{width:200px;bottom:80px;left:-20px;}
+.sk-tag-card{width:230px;top:0;left:20px;}
+.sk-header{display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem;}
+.sk-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.sk-icon-lime{background:rgba(200,240,74,0.1);}
+.sk-icon-purple{background:rgba(139,92,246,0.12);}
+.sk-icon-green{background:rgba(52,211,153,0.1);}
+.sk-title{font-size:.9rem;font-weight:600;}
+.sk-sub{font-size:.73rem;color:var(--muted);margin-top:.1rem;}
+.skill-tags-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem;}
+.sk-tag{background:rgba(200,240,74,0.08);border:1px solid rgba(200,240,74,0.15);color:var(--lime);font-size:.68rem;padding:.2rem .6rem;border-radius:50px;font-family:'DM Mono',monospace;}
+.sk-tag.purple{background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:var(--purple);}
+.sk-tag.green{background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.2);color:var(--success);}
+.expert-row{display:flex;align-items:center;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.expert-row:last-child{border:none;padding-bottom:0;}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.75rem;flex-shrink:0;}
+.av-l{background:rgba(200,240,74,0.15);color:var(--lime);}
+.av-p{background:rgba(139,92,246,0.15);color:var(--purple);}
+.av-g{background:rgba(52,211,153,0.12);color:var(--success);}
+.er-info{flex:1;}
+.er-info strong{font-size:.82rem;font-weight:500;display:block;}
+.er-info span{font-size:.7rem;color:var(--muted);}
+.er-price{font-size:.78rem;color:var(--lime);font-family:'DM Mono',monospace;font-weight:500;}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:.6rem;overflow:hidden;}
+.progress-fill{height:100%;background:var(--lime);border-radius:2px;}
+
+/* TRUST BAR */
+.trust-bar{padding:2rem 5%;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.trust-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;gap:3rem;flex-wrap:wrap;justify-content:center;}
+.trust-item{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--muted);}
+.trust-dot{width:8px;height:8px;background:var(--lime);border-radius:50%;flex-shrink:0;}
+
+/* SKILL CATEGORIES */
+.cats-section{padding:4rem 5%;background:var(--bg);}
+.cats-header{max-width:1280px;margin:0 auto 2rem;}
+.cats-header h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.5px;}
+.cats-header p{color:var(--muted);font-size:.88rem;margin-top:.3rem;}
+.cat-scroll{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.7rem;}
+.cat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.cat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,240,74,0.04),transparent);opacity:0;transition:opacity .2s;}
+.cat-card:hover{border-color:rgba(200,240,74,0.3);transform:translateY(-2px);}
+.cat-card:hover::before{opacity:1;}
+.cat-card.active{border-color:var(--lime);background:rgba(200,240,74,0.04);}
+.cat-emoji{font-size:1.5rem;margin-bottom:.6rem;display:block;}
+.cat-name{font-size:.85rem;font-weight:600;}
+.cat-count{font-size:.72rem;color:var(--muted);margin-top:.2rem;font-family:'DM Mono',monospace;}
+
+/* EXPERT GRID */
+.experts-section{padding:3rem 5% 5rem;}
+.experts-header{max-width:1280px;margin:0 auto 2rem;display:flex;align-items:flex-end;justify-content:space-between;}
+.experts-header h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.5px;}
+.experts-header a{font-size:.82rem;color:var(--lime);border-bottom:1px solid rgba(200,240,74,0.3);}
+.expert-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem;}
+.expert-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .22s;}
+.expert-card:hover{border-color:rgba(200,240,74,0.25);transform:translateY(-3px);}
+.ec-banner{height:6px;background:linear-gradient(90deg,var(--lime),var(--purple));}
+.ec-banner.alt{background:linear-gradient(90deg,var(--purple),var(--success));}
+.ec-banner.alt2{background:linear-gradient(90deg,var(--success),var(--lime));}
+.ec-body{padding:1.2rem;}
+.ec-top{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.9rem;}
+.ec-avatar{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;}
+.ec-info strong{font-size:.9rem;font-weight:600;display:block;}
+.ec-info .skill-area{font-size:.73rem;color:var(--lime);font-weight:500;font-family:'DM Mono',monospace;margin:.2rem 0;}
+.ec-info .stars-r{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;}
+.ec-info .stars-r .s{color:#f59e0b;}
+.ec-bio{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:.9rem;}
+.ec-skills{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.ec-skill-tag{background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:.68rem;padding:.2rem .6rem;border-radius:4px;font-family:'DM Mono',monospace;}
+.ec-footer{border-top:1px solid var(--border);padding:.8rem 1.2rem;display:flex;justify-content:space-between;align-items:center;}
+.ec-rate strong{font-size:1rem;color:var(--lime);font-family:'DM Mono',monospace;font-weight:600;}
+.ec-rate span{font-size:.7rem;color:var(--muted);}
+.btn-book{padding:.38rem 1rem;border-radius:50px;background:var(--lime);color:#000;font-size:.78rem;font-weight:600;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .18s;}
+.btn-book:hover{background:var(--lime2);}
+.verified-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.66rem;color:var(--success);font-family:'DM Mono',monospace;}
+.verified-badge::before{content:'✓';font-weight:700;}
+
+/* HOW IT WORKS */
+.how-section{padding:5rem 5%;background:var(--bg2);border-top:1px solid var(--border);}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-header{margin-bottom:3.5rem;}
+.how-header h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.5px;}
+.how-header p{color:var(--muted);font-size:.9rem;margin-top:.4rem;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.how-step{position:relative;}
+.how-step::after{content:'→';position:absolute;right:-1rem;top:1.8rem;color:var(--border2);font-size:1.2rem;}
+.how-step:last-child::after{display:none;}
+.step-num-box{width:44px;height:44px;background:rgba(200,240,74,0.07);border:1px solid rgba(200,240,74,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--lime);margin-bottom:1rem;}
+.how-step h3{font-size:.92rem;font-weight:600;margin-bottom:.5rem;}
+.how-step p{font-size:.8rem;color:var(--muted);line-height:1.65;}
+
+/* FOR EXPERTS SECTION */
+.for-experts{padding:5rem 5%;background:var(--bg);border-top:1px solid var(--border);}
+.fe-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.fe-left h2{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:.5px;line-height:1;margin-bottom:1rem;}
+.fe-left h2 em{color:var(--lime);font-style:normal;}
+.fe-left p{color:var(--muted);font-size:.9rem;line-height:1.75;margin-bottom:1.5rem;}
+.perks{list-style:none;margin-bottom:2rem;}
+.perks li{display:flex;align-items:flex-start;gap:.75rem;font-size:.87rem;color:var(--muted);margin-bottom:.9rem;line-height:1.55;}
+.perk-check{width:20px;height:20px;background:rgba(200,240,74,0.1);border:1px solid rgba(200,240,74,0.25);border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--lime);font-size:.7rem;flex-shrink:0;margin-top:.1rem;}
+.earnings-simulator{background:var(--card);border:1px solid var(--border2);border-radius:var(--r);padding:1.8rem;position:sticky;top:100px;}
+.sim-title{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--lime);letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5rem;}
+.sim-row{margin-bottom:1.3rem;}
+.sim-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:.5rem;}
+.sim-label strong{color:var(--text);font-family:'DM Mono',monospace;}
+input[type=range]{width:100%;accent-color:var(--lime);height:4px;cursor:pointer;}
+.sim-divider{height:1px;background:var(--border);margin:1.3rem 0;}
+.sim-breakdown{font-size:.78rem;}
+.sim-brow{display:flex;justify-content:space-between;padding:.35rem 0;}
+.sim-brow span{color:var(--muted);}
+.sim-brow strong{font-family:'DM Mono',monospace;}
+.sim-brow.total span{color:var(--text);font-weight:500;}
+.sim-brow.total strong{color:var(--lime);font-size:1.1rem;}
+.sim-brow.deduct strong{color:var(--danger);}
+.earn-note{background:rgba(200,240,74,0.05);border:1px solid rgba(200,240,74,0.12);border-radius:var(--r-sm);padding:.9rem 1rem;margin-top:1rem;}
+.earn-note p{font-size:.75rem;color:var(--muted);line-height:1.6;}
+.earn-note strong{color:var(--lime);}
+
+/* TESTIMONIALS */
+.testi-section{padding:5rem 5%;background:var(--bg2);border-top:1px solid var(--border);}
+.testi-inner{max-width:1200px;margin:0 auto;}
+.testi-header{margin-bottom:2.5rem;}
+.testi-header h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.5px;}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;position:relative;}
+.tc::before{content:'"';position:absolute;top:1rem;right:1.2rem;font-family:'Bebas Neue',sans-serif;font-size:4rem;color:rgba(200,240,74,0.07);line-height:1;}
+.tc-stars{color:#f59e0b;font-size:.85rem;margin-bottom:.9rem;letter-spacing:1px;}
+.tc p{font-size:.83rem;color:var(--muted);line-height:1.7;margin-bottom:1.1rem;}
+.tc-author{display:flex;align-items:center;gap:.7rem;}
+.tc-author strong{font-size:.82rem;font-weight:500;display:block;}
+.tc-author span{font-size:.7rem;color:var(--muted);}
+.tc-tag{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--lime);background:rgba(200,240,74,0.06);border:1px solid rgba(200,240,74,0.12);padding:.15rem .5rem;border-radius:4px;margin-top:.2rem;display:inline-block;}
+
+/* CTA BAND */
+.cta-band{padding:5rem 5%;text-align:center;background:var(--bg);border-top:1px solid var(--border);}
+.cta-band h2{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:.5px;margin-bottom:.8rem;}
+.cta-band h2 em{color:var(--lime);font-style:normal;}
+.cta-band p{color:var(--muted);font-size:.95rem;margin-bottom:2rem;}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 5% 2rem;}
+.footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2.5rem;}
+.footer-brand .logo{margin-bottom:.8rem;display:block;}
+.footer-brand p{font-size:.8rem;color:var(--muted);line-height:1.7;max-width:220px;}
+footer h4{font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted2);margin-bottom:1rem;font-family:'DM Mono',monospace;}
+footer ul{list-style:none;}
+footer li{margin-bottom:.6rem;}
+footer a{font-size:.82rem;color:var(--muted);transition:color .18s;}
+footer a:hover{color:var(--lime);}
+.footer-bottom{max-width:1280px;margin:0 auto;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.footer-bottom p{font-size:.76rem;color:var(--muted2);}
+.footer-bottom .commission-note{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--lime);opacity:.7;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:2.2rem;width:100%;max-width:440px;position:relative;}
+.modal h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.5px;margin-bottom:.3rem;}
+.modal-sub{font-size:.83rem;color:var(--muted);margin-bottom:1.6rem;}
+.modal-close{position:absolute;top:1.2rem;right:1.2rem;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1;}
+.tabs{display:flex;background:var(--card);border-radius:50px;padding:.3rem;margin-bottom:1.6rem;gap:.3rem;}
+.tab{flex:1;text-align:center;padding:.45rem;border-radius:50px;font-size:.82rem;cursor:pointer;color:var(--muted);transition:all .2s;}
+.tab.active{background:var(--lime);color:#000;font-weight:600;}
+.form-group{margin-bottom:.95rem;}
+.form-group label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:.4rem;font-family:'DM Mono',monospace;letter-spacing:.3px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:.65rem .95rem;background:var(--card);border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);font-size:.88rem;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .18s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--lime);}
+.form-group select option{background:var(--bg3);}
+.btn-full{width:100%;padding:.8rem;border-radius:50px;background:var(--lime);color:#000;font-size:.92rem;font-weight:600;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:background .18s;margin-top:.4rem;}
+.btn-full:hover{background:var(--lime2);}
+
+/* BOOKING */
+.bk-expert-row{display:flex;gap:.8rem;align-items:center;padding:.8rem;background:var(--card);border-radius:var(--r-sm);margin-bottom:1.4rem;}
+.bk-expert-row strong{font-size:.88rem;font-weight:500;display:block;}
+.bk-expert-row span{font-size:.72rem;color:var(--muted);}
+.bk-rate{font-family:'DM Mono',monospace;font-size:.85rem;color:var(--lime);margin-left:auto;}
+.bk-total{background:rgba(200,240,74,0.06);border:1px solid rgba(200,240,74,0.15);border-radius:var(--r-sm);padding:.9rem 1.1rem;display:flex;justify-content:space-between;align-items:center;margin:.9rem 0 .4rem;}
+.bk-total span{font-size:.85rem;color:var(--muted);}
+.bk-total strong{font-family:'DM Mono',monospace;font-size:1.1rem;color:var(--lime);}
+.payment-note{font-size:.73rem;color:var(--muted);line-height:1.55;}
+
+/* SUCCESS */
+.success-state{text-align:center;padding:1rem 0;display:none;}
+.succ-icon{width:64px;height:64px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-size:1.6rem;color:var(--success);}
+.success-state h3{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.5px;margin-bottom:.5rem;}
+.success-state p{font-size:.83rem;color:var(--muted);line-height:1.6;}
+
+@media(max-width:900px){
+  .hero-layout{grid-template-columns:1fr;}
+  .hero-visual{display:none;}
+  .hero h1{font-size:3.5rem;}
+  .hero h1 .line2{font-size:4rem;}
+  .how-grid{grid-template-columns:1fr 1fr;}
+  .fe-inner{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">SK<em>EL</em>VI</div>
+  <div class="nav-links">
+    <a href="#browse">Browse Skills</a>
+    <a href="#how">How It Works</a>
+    <a href="#experts">For Experts</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost" onclick="openModal('login')">Log in</button>
+    <button class="btn btn-lime" onclick="openModal('register')">Join Free →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-layout">
+    <div>
+      <div class="hero-eyebrow"><span></span> Pakistan's skills marketplace</div>
+      <h1>
+        Master<br>
+        <span class="line2">Real Skills.</span>
+        <span class="line3">From Experts.</span>
+      </h1>
+      <p class="hero-sub">Book 1-on-1 sessions with verified industry professionals. Learn coding, design, business, language, and 50+ more skills — on your schedule.</p>
+      <div class="hero-search">
+        <input type="text" placeholder="Search a skill: Python, Graphic Design, Excel…" id="searchInput">
+        <button class="btn btn-lime" onclick="doSearch()">Find Experts</button>
+      </div>
+      <div class="hero-pills">
+        <span class="pill-suggestion" onclick="filterAndScroll('coding')">💻 Coding</span>
+        <span class="pill-suggestion" onclick="filterAndScroll('design')">🎨 Design</span>
+        <span class="pill-suggestion" onclick="filterAndScroll('business')">📈 Business</span>
+        <span class="pill-suggestion" onclick="filterAndScroll('language')">🌐 Languages</span>
+        <span class="pill-suggestion" onclick="filterAndScroll('finance')">💰 Finance</span>
+      </div>
+      <div class="hero-numbers">
+        <div class="hn"><strong>2,000+</strong><span>Verified Experts</span></div>
+        <div class="hn"><strong>15K+</strong><span>Skills Learned</span></div>
+        <div class="hn"><strong>4.9★</strong><span>Avg Rating</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="sk-card sk-tag-card">
+        <div class="skill-tags-row">
+          <span class="sk-tag">Python</span><span class="sk-tag purple">UI/UX</span><span class="sk-tag green">Excel</span>
+          <span class="sk-tag">Figma</span><span class="sk-tag purple">SEO</span><span class="sk-tag green">SQL</span>
+        </div>
+        <div style="font-size:.72rem;color:var(--muted);font-family:'DM Mono',monospace">50+ skill categories</div>
+      </div>
+      <div class="sk-card sk-main">
+        <div class="sk-header">
+          <div class="sk-icon sk-icon-lime">💻</div>
+          <div><div class="sk-title">Top Coding Experts</div><div class="sk-sub">Available today</div></div>
+        </div>
+        <div class="expert-row">
+          <div class="av av-l">ZK</div>
+          <div class="er-info"><strong>Zain Khan</strong><span>Python · Django · APIs</span></div>
+          <span class="er-price">Rs 1200/hr</span>
+        </div>
+        <div class="expert-row">
+          <div class="av av-p">RA</div>
+          <div class="er-info"><strong>Rimsha Alam</strong><span>React · JavaScript</span></div>
+          <span class="er-price">Rs 950/hr</span>
+        </div>
+        <div class="expert-row">
+          <div class="av av-g">UB</div>
+          <div class="er-info"><strong>Umar Butt</strong><span>Flutter · Mobile Dev</span></div>
+          <span class="er-price">Rs 1100/hr</span>
+        </div>
+        <div class="progress-bar" style="margin-top:.9rem"><div class="progress-fill" style="width:78%"></div></div>
+        <div style="font-size:.7rem;color:var(--muted);margin-top:.4rem;font-family:'DM Mono',monospace">78% slots filled this week</div>
+      </div>
+      <div class="sk-card sk-mini">
+        <div style="font-size:.7rem;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:.4rem">Latest booking</div>
+        <div style="font-size:.82rem;font-weight:500">Fatima booked <span style="color:var(--lime)">Figma Mastery</span></div>
+        <div style="font-size:.7rem;color:var(--muted);margin-top:.3rem">2 minutes ago · ⭐ Expert verified</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item"><div class="trust-dot"></div>All experts verified by Skelvi</div>
+    <div class="trust-item"><div class="trust-dot"></div>Secure payment via JazzCash / EasyPaisa</div>
+    <div class="trust-item"><div class="trust-dot"></div>Free rebook if session quality unsatisfactory</div>
+    <div class="trust-item"><div class="trust-dot"></div>Real reviews, never faked</div>
+    <div class="trust-item"><div class="trust-dot"></div>WhatsApp booking confirmation</div>
+  </div>
+</div>
+
+<!-- SKILL CATEGORIES -->
+<section class="cats-section" id="browse">
+  <div class="cats-header">
+    <h2>Browse by Skill</h2>
+    <p>Find experts in any domain — from tech to creative to business.</p>
+  </div>
+  <div class="cat-scroll" id="catGrid">
+    <!-- rendered by JS -->
+  </div>
+</section>
+
+<!-- EXPERT LISTINGS -->
+<section class="experts-section" id="expertsList">
+  <div class="experts-header">
+    <h2>Featured Experts</h2>
+    <a href="#">View all →</a>
+  </div>
+  <div class="expert-grid" id="expertGrid"></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <h2>How Skelvi Works</h2>
+      <p>From browsing to booking to learning — all in one place.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="step-num-box">01</div>
+        <h3>Browse Experts</h3>
+        <p>Search by skill, price, or availability. Every expert has a verified profile with real reviews.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num-box">02</div>
+        <h3>Book a Session</h3>
+        <p>Pick a time slot that works for you. Pay securely upfront — your session is confirmed instantly.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num-box">03</div>
+        <h3>Learn the Skill</h3>
+        <p>Meet your expert online or in-person. 1-on-1 personalised coaching tailored to your level and goals.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num-box">04</div>
+        <h3>Grow & Review</h3>
+        <p>Leave an honest review, book a follow-up, or try a different skill. Your growth journey continues.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR EXPERTS -->
+<section class="for-experts" id="experts">
+  <div class="fe-inner">
+    <div class="fe-left">
+      <h2>Get Paid to<br>Share <em>Your Skills.</em></h2>
+      <p>You have expertise others need. Skelvi connects you with motivated learners and handles everything else — bookings, payments, your public profile.</p>
+      <ul class="perks">
+        <li><div class="perk-check">✓</div>Set your own hourly rate — you decide your worth</li>
+        <li><div class="perk-check">✓</div>Get paid within 24 hrs after session completion</li>
+        <li><div class="perk-check">✓</div>Keep 85% of every session — we take only 15%</li>
+        <li><div class="perk-check">✓</div>Build a portfolio of verified student reviews</li>
+        <li><div class="perk-check">✓</div>Teach online — reach learners across Pakistan</li>
+        <li><div class="perk-check">✓</div>No subscription fee. Zero cost to join Skelvi.</li>
+      </ul>
+      <button class="btn btn-lime" onclick="openModal('register-expert')" style="font-size:.9rem;padding:.7rem 1.8rem;border-radius:50px;">Apply as Expert →</button>
+    </div>
+    <div class="earnings-simulator">
+      <div class="sim-title">// Earnings Calculator</div>
+      <div class="sim-row">
+        <div class="sim-label"><span>Your rate per session</span><strong id="rateOut">Rs 1,000</strong></div>
+        <input type="range" min="300" max="5000" step="50" value="1000" id="rateSlider" oninput="calcEarn()">
+      </div>
+      <div class="sim-row">
+        <div class="sim-label"><span>Sessions per week</span><strong id="sessOut">8</strong></div>
+        <input type="range" min="1" max="30" step="1" value="8" id="sessSlider" oninput="calcEarn()">
+      </div>
+      <div class="sim-divider"></div>
+      <div class="sim-breakdown">
+        <div class="sim-brow"><span>Gross per month</span><strong id="grossOut">Rs 32,000</strong></div>
+        <div class="sim-brow deduct"><span>Skelvi fee (15%)</span><strong id="feeOut">− Rs 4,800</strong></div>
+        <div class="sim-brow total"><span>You take home</span><strong id="netOut">Rs 27,200</strong></div>
+      </div>
+      <div class="earn-note">
+        <p><strong>How Skelvi earns:</strong> We charge a 15% platform fee on completed sessions only. No upfront cost, no monthly charge, no hidden fees. You earn, we earn — together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="testi-inner">
+    <div class="testi-header">
+      <h2>Real Results, Real People</h2>
+      <p style="color:var(--muted);font-size:.88rem;margin-top:.3rem">What our learners and experts say about Skelvi</p>
+    </div>
+    <div class="testi-grid">
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <p>I learned Python from scratch in 6 sessions. My expert gave me real projects to work on — not just theory. I got my first freelance project within a month of finishing.</p>
+        <div class="tc-author">
+          <div class="av av-l" style="width:36px;height:36px;font-size:.75rem;border-radius:9px;">FA</div>
+          <div><strong>Fatima Anjum</strong><span>Lahore</span><span class="tc-tag">Python</span></div>
+        </div>
+      </div>
+      <div class="tc">
+        <div class="tc-stars">★★★★★</div>
+        <p>As a graphic designer, I was skeptical about teaching online. But Skelvi made it so easy. I now earn Rs 45,000+ a month sharing what I already know. Highly recommend.</p>
+        <div class="tc-author">
+          <div class="av av-p" style="width:36px;height:36px;font-size:.75rem;border-radius:9px;">KJ</div>
+          <div><strong>Kamil Javed</strong><span>Karachi · Expert</span><span class="tc-tag">Graphic Design</span></div>
+        </div>
+      </div>
+      <div class="tc">
+        <div class="tc-stars">★★★★☆</div>
+        <p>Booked an Excel and financial modelling expert for 4 sessions. My work presentations have completely improved. The booking process was smooth and payment was totally secure.</p>
+        <div class="tc-author">
+          <div class="av av-g" style="width:36px;height:36px;font-size:.75rem;border-radius:9px;">SN</div>
+          <div><strong>Sana Niazi</strong><span>Islamabad</span><span class="tc-tag">Excel · Finance</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2>Ready to Build<br><em>Real Skills?</em></h2>
+  <p>Join thousands of learners and experts on Skelvi — Pakistan's skills marketplace.</p>
+  <div class="cta-btns">
+    <button class="btn btn-lime" style="padding:.75rem 2rem;font-size:.95rem;border-radius:50px;" onclick="openModal('register')">Start Learning →</button>
+    <button class="btn btn-ghost" style="padding:.75rem 2rem;font-size:.95rem;border-radius:50px;" onclick="openModal('register-expert')">Become an Expert</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">SK<em>EL</em>VI</span>
+      <p>Pakistan's marketplace for real skills, real experts, and real results. Learn what matters.</p>
+    </div>
+    <div>
+      <h4>For Learners</h4>
+      <ul>
+        <li><a href="#">Browse Experts</a></li>
+        <li><a href="#">How It Works</a></li>
+        <li><a href="#">All Skills</a></li>
+        <li><a href="#">Reviews</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>For Experts</h4>
+      <ul>
+        <li><a href="#">Apply as Expert</a></li>
+        <li><a href="#">How Payouts Work</a></li>
+        <li><a href="#">Expert Dashboard</a></li>
+        <li><a href="#">Success Stories</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Skelvi</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Skelvi. Built in Pakistan 🇵🇰</p>
+    <span class="commission-note">15% platform fee · no hidden costs</span>
+  </div>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal" onclick="if(event.target===this)closeBooking()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBooking()">✕</button>
+    <div id="bookingContent"></div>
+  </div>
+</div>
+
+<script>
+const categories = [
+  {emoji:'💻',name:'Coding & Dev',count:214,key:'coding'},
+  {emoji:'🎨',name:'Design & UI',count:183,key:'design'},
+  {emoji:'📈',name:'Digital Marketing',count:97,key:'marketing'},
+  {emoji:'💰',name:'Finance & Excel',count:122,key:'finance'},
+  {emoji:'🌐',name:'Languages',count:88,key:'language'},
+  {emoji:'📸',name:'Photography',count:63,key:'photo'},
+  {emoji:'🎵',name:'Music',count:54,key:'music'},
+  {emoji:'✍️',name:'Writing & Content',count:79,key:'writing'},
+  {emoji:'🧠',name:'Business & Strategy',count:108,key:'business'},
+  {emoji:'🤖',name:'AI & Automation',count:71,key:'ai'},
+];
+
+const experts = [
+  {id:1,name:'Zain Khan',initials:'ZK',color:'av-l',banner:'',skill:'Python & Web Dev',exp:5,rating:5.0,reviews:92,price:1200,bio:'Senior software engineer. Teaches Python, Django, REST APIs. Real-world projects — no boring textbook exercises.',tags:['Python','Django','APIs','Git'],cat:'coding'},
+  {id:2,name:'Rimsha Alam',initials:'RA',color:'av-p',banner:'alt',skill:'UI/UX Design',exp:4,rating:4.9,reviews:68,price:950,bio:'Product designer at a tech startup. Teaches Figma, UX research, prototyping. Portfolio-focused sessions.',tags:['Figma','UX Research','Prototyping'],cat:'design'},
+  {id:3,name:'Kamil Javed',initials:'KJ',color:'av-g',banner:'alt2',skill:'Graphic Design',exp:7,rating:4.9,reviews:154,price:800,bio:'Freelance designer with international clients. Teaches Illustrator, Photoshop, and brand identity design.',tags:['Illustrator','Photoshop','Branding'],cat:'design'},
+  {id:4,name:'Sana Niazi',initials:'SN',color:'av-l',banner:'',skill:'Finance & Excel',exp:6,rating:4.8,reviews:81,price:750,bio:'Chartered accountant. Teaches Excel, financial modelling, and data analysis for professionals.',tags:['Excel','Financial Modelling','Power BI'],cat:'finance'},
+  {id:5,name:'Umar Butt',initials:'UB',color:'av-p',banner:'alt',skill:'Mobile Dev (Flutter)',exp:3,rating:4.7,reviews:45,price:1100,bio:'Flutter developer with 5 published apps. Teaches cross-platform mobile development from scratch.',tags:['Flutter','Dart','Firebase'],cat:'coding'},
+  {id:6,name:'Nadia Shah',initials:'NS',color:'av-g',banner:'alt2',skill:'Digital Marketing',exp:8,rating:5.0,reviews:203,price:900,bio:'Growth marketer. Teaches SEO, Google Ads, Meta Ads, and email marketing. Real campaigns, real results.',tags:['SEO','Google Ads','Meta Ads','Email'],cat:'marketing'},
+  {id:7,name:'Ali Raza',initials:'AR',color:'av-l',banner:'',skill:'Business English',exp:9,rating:4.9,reviews:177,price:600,bio:'Corporate communication trainer. Teaches professional writing, presentation skills, and business English.',tags:['Business English','Presentations','Writing'],cat:'language'},
+  {id:8,name:'Hina Tariq',initials:'HT',color:'av-p',banner:'alt',skill:'AI & Automation',exp:3,rating:4.8,reviews:39,price:1300,bio:'AI consultant. Teaches ChatGPT, prompt engineering, no-code automation, and AI tools for business.',tags:['ChatGPT','Zapier','Make.com','AI Tools'],cat:'ai'},
+];
+
+let currentExpert = null;
+
+function renderCats(activeKey='all'){
+  const g = document.getElementById('catGrid');
+  g.innerHTML = categories.map(c=>`
+    <div class="cat-card${activeKey===c.key?' active':''}" onclick="filterCat('${c.key}',this)">
+      <span class="cat-emoji">${c.emoji}</span>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.count} experts</div>
+    </div>`).join('');
+}
+
+function renderExperts(list){
+  document.getElementById('expertGrid').innerHTML = list.map(e=>`
+    <div class="expert-card" onclick="openBooking(${e.id})">
+      <div class="ec-banner ${e.banner}"></div>
+      <div class="ec-body">
+        <div class="ec-top">
+          <div class="ec-avatar ${e.color}" style="font-size:.95rem">${e.initials}</div>
+          <div class="ec-info">
+            <strong>${e.name} &nbsp;<span class="verified-badge">Verified</span></strong>
+            <div class="skill-area">${e.skill}</div>
+            <div class="stars-r"><span class="s">${'★'.repeat(Math.floor(e.rating))}</span>&nbsp;${e.rating} · ${e.reviews} reviews</div>
+          </div>
+        </div>
+        <div class="ec-bio">${e.bio}</div>
+        <div class="ec-skills">${e.tags.map(t=>`<span class="ec-skill-tag">${t}</span>`).join('')}</div>
+      </div>
+      <div class="ec-footer">
+        <div class="ec-rate"><strong>Rs ${e.price.toLocaleString()}</strong><span>/session</span></div>
+        <button class="btn-book" onclick="openBooking(${e.id});event.stopPropagation()">Book Session</button>
+      </div>
+    </div>`).join('');
+}
+
+renderCats();
+renderExperts(experts);
+
+function filterCat(key, el){
+  document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderExperts(experts.filter(e=>e.cat===key));
+  document.getElementById('expertsList').scrollIntoView({behavior:'smooth'});
+}
+
+function filterAndScroll(key){
+  const cat = categories.find(c=>c.key===key);
+  if(!cat) return;
+  renderExperts(experts.filter(e=>e.cat===key));
+  document.getElementById('expertsList').scrollIntoView({behavior:'smooth'});
+}
+
+function doSearch(){
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  if(!q){renderExperts(experts);return;}
+  renderExperts(experts.filter(e=>
+    e.name.toLowerCase().includes(q)||
+    e.skill.toLowerCase().includes(q)||
+    e.bio.toLowerCase().includes(q)||
+    e.tags.some(t=>t.toLowerCase().includes(q))||
+    e.cat.includes(q)
+  ));
+  document.getElementById('expertsList').scrollIntoView({behavior:'smooth'});
+}
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+
+// EARNINGS CALC
+function calcEarn(){
+  const rate = parseInt(document.getElementById('rateSlider').value);
+  const sess = parseInt(document.getElementById('sessSlider').value);
+  const gross = rate * sess * 4;
+  const fee = Math.round(gross * 0.15);
+  const net = gross - fee;
+  document.getElementById('rateOut').textContent = 'Rs '+rate.toLocaleString();
+  document.getElementById('sessOut').textContent = sess;
+  document.getElementById('grossOut').textContent = 'Rs '+gross.toLocaleString();
+  document.getElementById('feeOut').textContent = '− Rs '+fee.toLocaleString();
+  document.getElementById('netOut').textContent = 'Rs '+net.toLocaleString();
+}
+
+// AUTH MODAL
+function openModal(type){
+  const c = document.getElementById('modalContent');
+  const isExpert = type==='register-expert';
+  if(type==='login'){
+    c.innerHTML=`
+      <h2>Welcome Back</h2>
+      <p class="modal-sub">Log in to your Skelvi account</p>
+      <div class="tabs"><div class="tab active" onclick="switchTab(this,'learner')">Learner</div><div class="tab" onclick="switchTab(this,'expert')">Expert</div></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-full" onclick="fakeAuth('Logged in! Welcome back to Skelvi.')">Log In</button>
+      <p style="text-align:center;margin-top:1rem;font-size:.78rem;color:var(--muted)">No account? <a href="#" style="color:var(--lime)" onclick="openModal('register')">Join free</a></p>`;
+  } else {
+    c.innerHTML=`
+      <h2>${isExpert?'Apply as Expert':'Join Skelvi'}</h2>
+      <p class="modal-sub">${isExpert?'Start earning from your expertise today.':'Create your free account and start learning.'}</p>
+      <div class="tabs">
+        <div class="tab ${isExpert?'':'active'}" onclick="switchTab(this,'learner')">I'm a Learner</div>
+        <div class="tab ${isExpert?'active':''}" onclick="switchTab(this,'expert')">I'm an Expert</div>
+      </div>
+      <div class="form-group"><label>Full Name</label><input type="text" placeholder="e.g. Ahmed Hassan"></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="Min 8 characters"></div>
+      <div class="form-group expert-only" style="display:${isExpert?'block':'none'}">
+        <label>Your Primary Skill</label>
+        <select><option>Coding / Development</option><option>Design / UI</option><option>Digital Marketing</option><option>Finance / Excel</option><option>Languages</option><option>Photography</option><option>Music</option><option>Writing / Content</option><option>Business / Strategy</option><option>AI & Automation</option></select>
+      </div>
+      <div class="form-group expert-only" style="display:${isExpert?'block':'none'}">
+        <label>Years of Experience</label>
+        <select><option>1–2 years</option><option>3–5 years</option><option>5–10 years</option><option>10+ years</option></select>
+      </div>
+      <div class="form-group expert-only" style="display:${isExpert?'block':'none'}">
+        <label>Rate per Session (Rs)</label>
+        <input type="number" placeholder="e.g. 1000">
+      </div>
+      <button class="btn-full" onclick="fakeAuth('${isExpert?'Application submitted! Skelvi will review your profile within 24 hours.':'Account created! Check your email to verify.'}')">${isExpert?'Submit Application →':'Create Account →'}</button>`;
+  }
+  document.getElementById('authModal').classList.add('open');
+}
+
+function switchTab(el,role){
+  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.expert-only').forEach(e=>e.style.display=role==='expert'?'block':'none');
+}
+function closeModal(){document.getElementById('authModal').classList.remove('open');}
+function fakeAuth(msg){closeModal();alert('✅ '+msg);}
+
+// BOOKING
+function openBooking(id){
+  currentExpert = experts.find(e=>e.id===id);
+  const e = currentExpert;
+  document.getElementById('bookingContent').innerHTML=`
+    <h2>Book a Session</h2>
+    <div class="bk-expert-row">
+      <div class="av ${e.color}" style="width:44px;height:44px;font-size:.9rem;border-radius:11px">${e.initials}</div>
+      <div><strong>${e.name}</strong><span>${e.skill}</span></div>
+      <span class="bk-rate">Rs ${e.price.toLocaleString()}/hr</span>
+    </div>
+    <div class="form-group"><label>Date</label><input type="date" id="bkDate" min="${new Date().toISOString().split('T')[0]}"></div>
+    <div class="form-group"><label>Time Slot</label>
+      <select id="bkTime"><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>1:00 PM</option><option>3:00 PM</option><option>5:00 PM</option><option>7:00 PM</option></select></div>
+    <div class="form-group"><label>Session Length</label>
+      <select id="bkDur" onchange="updateTotal()"><option value="1">1 hour</option><option value="1.5">1.5 hours</option><option value="2">2 hours</option></select></div>
+    <div class="bk-total"><span>Total</span><strong id="bkTotal">Rs ${e.price.toLocaleString()}</strong></div>
+    <p class="payment-note">💳 Pay via JazzCash, EasyPaisa or bank transfer. You'll receive payment instructions by WhatsApp after confirming.</p>
+    <button class="btn-full" id="bkBtn" onclick="confirmBooking()">Confirm Booking →</button>
+    <div class="success-state" id="bkSuccess">
+      <div class="succ-icon">✓</div>
+      <h3>Session Booked!</h3>
+      <p>Your session with <strong>${e.name}</strong> is confirmed. Check WhatsApp for payment instructions and a session link within 30 minutes.</p>
+    </div>`;
+  document.getElementById('bookingModal').classList.add('open');
+}
+
+function updateTotal(){
+  if(!currentExpert)return;
+  const dur=parseFloat(document.getElementById('bkDur').value);
+  document.getElementById('bkTotal').textContent='Rs '+(Math.round(currentExpert.price*dur)).toLocaleString();
+}
+function confirmBooking(){
+  document.getElementById('bkBtn').style.display='none';
+  document.querySelectorAll('#bookingContent .form-group').forEach(g=>g.style.display='none');
+  document.querySelector('#bookingContent .bk-total').style.display='none';
+  document.querySelector('#bookingContent .payment-note').style.display='none';
+  document.getElementById('bkSuccess').style.display='block';
+}
+function closeBooking(){document.getElementById('bookingModal').classList.remove('open');currentExpert=null;}
+</script>
+</body>
+</html>
